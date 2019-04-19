@@ -1,23 +1,19 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
+import './NavbarB.css';
 
 import "bootswatch/dist/lux/bootstrap.css";
-import {Navbar, Nav, Container} from "react-bootstrap";
+import {Container, Nav, Navbar} from "react-bootstrap";
+import {NavLink} from "react-router-dom";
 
-export class NavbarB extends PureComponent {
-    render() {
-        return (
-            <Navbar bg="dark" expand="lg" variant="dark">
-                <Container>
-                    <Navbar.Brand href="#home">IAM</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-                        <Nav className="mr-auto" bg="dark">
-                            <Nav.Link href="users/create">Create user</Nav.Link>
-                            <Nav.Link href="#link">Link</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-        );
-    }
-}
+export const NavbarB = () =>
+    <Navbar bg="dark" expand="lg" variant="dark">
+        <Container>
+            <Navbar.Brand><NavLink to='/users' className='navlink'>IAM</NavLink></Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+            <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+                <Nav className="mr-auto" bg="dark">
+                    <NavLink to='/users' className='navlink'>Users</NavLink>
+                </Nav>
+            </Navbar.Collapse>
+        </Container>
+    </Navbar>;

@@ -1,14 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {NavbarB} from "../NavbarB/NavbarB";
+import {BrowserRouter, Route} from "react-router-dom";
+import {UsersListContainer} from "../../Containers/UsersList/UsersListContainer";
 
-class App extends Component {
-    render() {
-        return (
+export const App = () => {
+    return (
+        <BrowserRouter>
             <div>
                 <NavbarB/>
+                <div className='container'>
+                    <Route path='/' exact component={UsersListContainer}/>
+                    <Route path='/users' exact component={UsersListContainer}/>
+                </div>
             </div>
-        );
-    }
+        </BrowserRouter>
+    );
 }
 
 export default App;
