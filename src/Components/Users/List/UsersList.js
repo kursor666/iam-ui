@@ -1,3 +1,5 @@
+import './UsersList.css';
+
 import React, {useEffect, useState} from 'react';
 import Table from "react-bootstrap/Table";
 
@@ -15,7 +17,7 @@ export const UsersList = (props) => {
     });
 
     return (
-        <Table responsive>
+        <Table striped bordered hover responsive>
             <thead>
             <tr>
                 <th>id</th>
