@@ -1,20 +1,18 @@
 import React from 'react';
 import {NavbarB} from "../NavbarB/NavbarB";
 import {BrowserRouter, Route} from "react-router-dom";
-import {UsersListContainer} from "../../Containers/UsersList/UsersListContainer";
+import {UsersList} from "../Users/List/UsersList";
 
 export const App = () => {
     return (
         <BrowserRouter>
-            <div>
-                <NavbarB/>
-                <div className='container'>
-                    <Route path='/' exact component={UsersListContainer}/>
-                    <Route path='/users' exact component={UsersListContainer}/>
-                </div>
+            <NavbarB/>
+            <div className='container mt-5'>
+                <Route path='/' exact component={UsersList}/>
+                <Route path='/users' exact component={UsersList}/>
             </div>
         </BrowserRouter>
     );
-}
+};
 
 export default App;
