@@ -3,7 +3,6 @@ import './UsersList.css';
 import React, {useEffect, useState} from 'react';
 import {Button, Col, Container, FormControl, InputGroup, Pagination, Row, Table} from "react-bootstrap";
 
-const itemsOnPage = 7;
 const initialUsers = [
     {id: '1', name: 'test1', surname: 'test'},
     {id: '1', name: 'test1', surname: 'test'},
@@ -65,25 +64,51 @@ const PaginationUsers = (props) => {
     );
 };
 
+const UsersTable = ({users, filter, page, changeActive, total}) => {
+    const filteredUsers = users
+        .filter(value => value.first_name.toLowerCase().includes(filter.toLowerCase()));
+    return (
+        <div>
+            <Table striped bordered hover responsive>
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>surname</th>
+                </tr>
+                </thead>
+                <tbody>
+                {filteredUsers.map((user, key) => (
+                    <tr key={key}>
+                        <th>{user.id}</th>
+                        <th>{user.first_name}</th>
+                        <th>{user.last_name}</th>
+                    </tr>
+                ))}
+                </tbody>
+            </Table>
+            <PaginationUsers active={page} change={changeActive} total={total}/>
+        </div>
+    )
+};
+
 export const UsersList = () => {
     let [searchName, setName] = useState("");
-    let [users, setUsers] = useState([]);
-    let [page, changeActive] = useState(1);
+    let [users, setUsers] = useState(null);
+    let [page, setPage] = useState(1);
 
-    const filterUsers = (value) =>{
+    const filterUsers = (value) => {
         setName(value);
-        changeActive(1);
     };
 
     useEffect(() => {
-        setUsers(initialUsers);
-    });
+        setUsers(null);
+        fetch(`https://reqres.in/api/users?page=${page}`)
+            .then(res => res.json())
+            .then(json => setUsers(json));
+    }, [page]);
 
-    const filteredUsers = users
-        .filter(value => value.name.includes(searchName));
 
-    const slicedUsers = filteredUsers
-        .slice((page - 1) * itemsOnPage, page * itemsOnPage);
 
     return (
         <Container>
@@ -104,25 +129,11 @@ export const UsersList = () => {
             </Row>
             <Row>
                 <Col>
-                    <Table striped bordered hover responsive>
-                        <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>name</th>
-                            <th>surname</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {slicedUsers.map((user, key) => (
-                            <tr key={key}>
-                                <th>{user.id}</th>
-                                <th>{user.name}</th>
-                                <th>{user.surname}</th>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </Table>
-                    <PaginationUsers active={page} change={changeActive} total={filteredUsers.length/itemsOnPage+1}/>
+                    {
+                        (!users) ? <div>Loading</div>:
+                        <UsersTable users={users.data} filter={searchName} changeActive={setPage} page={page}
+                                total={users.total_pages}/>
+                    }
                 </Col>
             </Row>
         </Container>
